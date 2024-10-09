@@ -34,4 +34,23 @@ public class SharedState {
         Thread thread = Thread.currentThread();
         System.out.println(thread.getName() + " released a lock");
     }
+
+    public synchronized String addMoney(String threadName, String accountName, int amount) {
+        try {
+            acquireLock();
+
+            if (account.getAccountName().equals(accountName)) {
+                int currentBalance = account.getBalance();
+                account.setBalance(currentBalance + amount);
+                System.out.println(threadName + " added " + amount + " to account " + accountName);
+            } else {
+                return "Account not found!";
+            }
+        } catch (InterruptedException e) {
+            return threadName + " was interrupted while trying to add money.";
+        } finally {
+            releaseLock();
+        }
+        return "Money added successfully by " + threadName + ". Current balance: " + account.getBalance(); 
+    }
 }
