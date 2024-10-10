@@ -53,4 +53,23 @@ public class SharedState {
         }
         return "Money added successfully by " + threadName + ". Current balance: " + account.getBalance(); 
     }
+
+    public synchronized String withdrawMoney(String threadName, String accountName, int amount) {
+        try {
+            acquireLock();
+
+            if (account.getAccountName().equals(accountName)) {
+                int currentBalance = account.getBalance();
+                account.setBalance(currentBalance - amount);
+                System.out.println(threadName + " withdrew " + amount + " from account " + accountName);
+            } else {
+                return "Account not found!";
+            }
+        } catch (InterruptedException e) {
+            return threadName + " was interrupted while trying to add money.";
+        } finally {
+            releaseLock();
+        }
+        return "Money has been withdrawn successfully by " + threadName + ". Current balance: " + account.getBalance();
+    }
 }
