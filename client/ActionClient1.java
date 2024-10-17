@@ -11,7 +11,7 @@ public class ActionClient1 {
         BufferedReader in = null;
         int actionSocketNumber = 4545;
         String actionServerName = "localhost";
-        String actionClientID = "ActionClient1";
+        String actionClientID = "CLIENT1";
 
         try {
             // Initialize the socket and IO streams
@@ -32,28 +32,42 @@ public class ActionClient1 {
         String fromUser;
 
         System.out.println("Initialized " + actionClientID + " client and IO connections");
+        System.out.println("--------------------------------");
+
+        // Show the options to the user
+        Menu.showMenu();
 
         // Client sends first, waits for server's response
         while (true) {
             // Read user input
+            System.out.print("Enter your choice (1-4) or 'exit' to quit: ");
             fromUser = stdIn.readLine();
-            if (fromUser != null) {
+
+            if (fromUser != null && fromUser.equalsIgnoreCase("exit")) {
+                System.out.println("Exiting the client.");
+                break;
+            }
+
+            if (Menu.isValidChoice(fromUser)) {
                 // Send the user input to the server
                 System.out.println(actionClientID + " sending " + fromUser + " to ActionServer");
                 out.println(fromUser);
-            }
 
-            // Read and display the server's response
-            fromServer = in.readLine();
-            if (fromServer != null) {
-                System.out.println(actionClientID + " received " + fromServer + " from ActionServer");
+                // Read and display the server's response
+                fromServer = in.readLine();
+                if (fromServer != null) {
+                    System.out.println(fromServer); // Directly print the response
+                }
+            } else {
+                System.out.println("Invalid choice. Please try again.");
+                Menu.showMenu(); // Show the menu again if the input is invalid
             }
         }
 
-        // Clean up resources (commented out as loop runs indefinitely)
-        // out.close();
-        // in.close();
-        // stdIn.close();
-        // actionClientSocket.close();
+        // Clean up resources
+        out.close();
+        in.close();
+        stdIn.close();
+        actionClientSocket.close();
     }
 }
