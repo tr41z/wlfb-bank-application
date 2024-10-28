@@ -12,6 +12,7 @@ public class ActionClient1 {
         int actionSocketNumber = 4545;
         String actionServerName = "localhost";
         String actionClientID = "CLIENT1";
+        boolean waitingForAmount = false;
 
         try {
             // Initialize the socket and IO streams
@@ -37,10 +38,13 @@ public class ActionClient1 {
         // Show the options to the user
         Menu.showMenu();
 
-        // Client sends first, waits for server's response
         while (true) {
-            // Read user input
-            System.out.print("Enter your choice (1-4) or 'exit' to quit: ");
+            if (waitingForAmount) {
+                System.out.print("Enter the amount to withdraw: ");
+            } else {
+                System.out.print("Enter your choice (1-4) or 'exit' to quit: ");
+            }
+
             fromUser = stdIn.readLine();
 
             if (fromUser != null && fromUser.equalsIgnoreCase("exit")) {
@@ -48,7 +52,15 @@ public class ActionClient1 {
                 break;
             }
 
-            if (Menu.isValidChoice(fromUser)) {
+            if (waitingForAmount) {
+                // Send the amount to the server as the withdrawal input
+                out.println(fromUser);
+                fromServer = in.readLine();
+                if (fromServer != null) {
+                    System.out.println(fromServer);
+                }
+                waitingForAmount = false; // Reset the flag after processing
+            } else if (Menu.isValidChoice(fromUser)) {
                 // Send the user input to the server
                 System.out.println(actionClientID + " sending " + fromUser + " to ActionServer");
                 out.println(fromUser);
@@ -56,7 +68,11 @@ public class ActionClient1 {
                 // Read and display the server's response
                 fromServer = in.readLine();
                 if (fromServer != null) {
-                    System.out.println(fromServer); // Directly print the response
+                    System.out.println(fromServer);
+                    // If the response indicates it's waiting for a withdrawal amount, set the flag
+                    if (fromServer.contains("How much money do you want to withdraw?")) {
+                        waitingForAmount = true;
+                    }
                 }
             } else {
                 System.out.println("Invalid choice. Please try again.");

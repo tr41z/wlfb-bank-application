@@ -5,6 +5,7 @@ public class SharedActionState {
 	int threadsWaiting = 0; // number of waiting writers
 
 	private double accountBalance;
+	private boolean waitingForWithdrawalAmount = false;
 
 	// Constructor
 	SharedActionState(double accountBalance) {
@@ -39,40 +40,38 @@ public class SharedActionState {
 	}
 
 	/* The processInput method */
-	public synchronized String processInput(String myThreadName, String theInput, String ammountToWithdraw) {
+	public synchronized String processInput(String myThreadName, String theInput) {
 		System.out.println(myThreadName + " received " + theInput);
 		String theOutput = null;
 
-		// Check what the client said
-		if (theInput.equalsIgnoreCase("1")) {
-			// Correct request
-			switch (myThreadName) {
-				case "CLIENT1":
-					theOutput = String.format("Account balance: %.2f units", accountBalance);
-					break;
-
-				case "CLIENT2":
-					theOutput = String.format("Account balance: %.2f units", accountBalance);
-					break;
-
-				case "CLIENT3":
-					theOutput = String.format("Account balance: %.2f units", accountBalance);
-					break;
-
-				default:
-					System.out.println("Error - thread call not recognized.");
+		if (waitingForWithdrawalAmount) {
+			try {
+				int amount = Integer.parseInt(theInput);
+				accountBalance -= amount;
+				theOutput = String.format("Account balance: %.2f units", accountBalance);
+				waitingForWithdrawalAmount = false;
+			} catch (NumberFormatException e) {
+				theOutput = "Invalid amount. Please enter a valid number.";
 			}
-		} else if (theInput.equalsIgnoreCase("2")) {
-			int amount = Integer.valueOf(theInput);
-			switch (myThreadName) {
-				case "CLIENT1":
-					theOutput = String.format("Account balance: %.2f units", accountBalance = accountBalance - amount);
-				default:
-					System.out.println("The input is not a number");
+		} else {
+			// Check what the client said
+			if (theInput.equalsIgnoreCase("1")) {
+				// Correct request
+				switch (myThreadName) {
+					case "CLIENT1":
+					case "CLIENT2":
+					case "CLIENT3":
+						theOutput = String.format("Account balance: %.2f units", accountBalance);
+						break;
+					default:
+						System.out.println("Error - thread call not recognized.");
+				}
+			} else if (theInput.equalsIgnoreCase("2")) {
+				theOutput = "How much money do you want to withdraw?";
+				waitingForWithdrawalAmount = true;
+			} else { // Incorrect request
+				theOutput = myThreadName + " received incorrect request - only understand \"Do my action!\"";
 			}
-		}
-		else { // Incorrect request
-			theOutput = myThreadName + " received incorrect request - only understand \"Do my action!\"";
 		}
 
 		// Return the output message to the ActionServer

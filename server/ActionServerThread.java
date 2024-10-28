@@ -31,7 +31,7 @@ public class ActionServerThread extends Thread {
           // Try to acquire a lock before processing
           try {
             mySharedActionStateObject.acquireLock(); // Acquire lock
-            outputLine = mySharedActionStateObject.processInput(myActionServerThreadName, inputLine, inputLine); // Process input
+            outputLine = mySharedActionStateObject.processInput(myActionServerThreadName, inputLine); // Process input
             out.println(outputLine); // Send output back to the client
             mySharedActionStateObject.releaseLock(); // Release lock after processing
           } catch (InterruptedException e) {
