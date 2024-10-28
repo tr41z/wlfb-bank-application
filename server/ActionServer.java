@@ -9,11 +9,8 @@ public class ActionServer {
     boolean listening = true;
     String actionServerName = "ActionServer";
     int actionServerNumber = 4545;
-    
-    double accountBalance = 1000.0;
 
-    // Create the shared object in the global scope
-    SharedActionState ourSharedActionStateObject = new SharedActionState(accountBalance);
+    double accountBalance = 1000.0;
 
     // Create the server socket
     try {
@@ -28,9 +25,9 @@ public class ActionServer {
     // Handle client connections - only four clients at a time
     while (listening) {
       // Start four threads, one for each client connection
-      new ActionServerThread(actionServerSocket.accept(), "CLIENT1", ourSharedActionStateObject).start();
-      new ActionServerThread(actionServerSocket.accept(), "CLIENT2", ourSharedActionStateObject).start();
-      new ActionServerThread(actionServerSocket.accept(), "CLIENT3", ourSharedActionStateObject).start();
+      new ActionServerThread(actionServerSocket.accept(), "CLIENT1", new SharedActionState(accountBalance)).start();
+      new ActionServerThread(actionServerSocket.accept(), "CLIENT2", new SharedActionState(accountBalance)).start();
+      new ActionServerThread(actionServerSocket.accept(), "CLIENT3", new SharedActionState(accountBalance)).start();
 
       System.out.println("New " + actionServerName + " thread started.");
     }

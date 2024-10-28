@@ -1,13 +1,8 @@
 package server;
 
-import java.net.*;
-import java.io.*;
-
 public class SharedActionState {
-	private SharedActionState mySharedObj;
-	private String myThreadName;
 	private boolean accessing = false; // true if a thread has a lock, false otherwise
-	private int threadsWaiting = 0; // number of waiting writers
+	int threadsWaiting = 0; // number of waiting writers
 
 	private double accountBalance;
 
@@ -44,7 +39,7 @@ public class SharedActionState {
 	}
 
 	/* The processInput method */
-	public synchronized String processInput(String myThreadName, String theInput) {
+	public synchronized String processInput(String myThreadName, String theInput, String ammountToWithdraw) {
 		System.out.println(myThreadName + " received " + theInput);
 		String theOutput = null;
 
@@ -67,7 +62,16 @@ public class SharedActionState {
 				default:
 					System.out.println("Error - thread call not recognized.");
 			}
-		} else { // Incorrect request
+		} else if (theInput.equalsIgnoreCase("2")) {
+			int amount = Integer.valueOf(theInput);
+			switch (myThreadName) {
+				case "CLIENT1":
+					theOutput = String.format("Account balance: %.2f units", accountBalance = accountBalance - amount);
+				default:
+					System.out.println("The input is not a number");
+			}
+		}
+		else { // Incorrect request
 			theOutput = myThreadName + " received incorrect request - only understand \"Do my action!\"";
 		}
 
