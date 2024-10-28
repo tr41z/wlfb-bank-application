@@ -6,6 +6,7 @@ public class SharedActionState {
 
 	private double accountBalance;
 	private boolean waitingForWithdrawalAmount = false;
+	private boolean waitingForAddAmount = false;
 
 	// Constructor
 	SharedActionState(double accountBalance) {
@@ -53,6 +54,15 @@ public class SharedActionState {
 			} catch (NumberFormatException e) {
 				theOutput = "Invalid amount. Please enter a valid number.";
 			}
+		} else if (waitingForAddAmount) {
+			try {
+				int amount = Integer.parseInt(theInput);
+				accountBalance += amount;
+				theOutput = String.format("Account balance: %.2f units", accountBalance);
+				waitingForAddAmount = false;
+			} catch (NumberFormatException e) {
+				theOutput = "Invalid amount. Please enter a valid number.";
+			} 
 		} else {
 			// Check what the client said
 			if (theInput.equalsIgnoreCase("1")) {
@@ -69,6 +79,9 @@ public class SharedActionState {
 			} else if (theInput.equalsIgnoreCase("2")) {
 				theOutput = "How much money do you want to withdraw?";
 				waitingForWithdrawalAmount = true;
+			} else if (theInput.equalsIgnoreCase("3")) {
+				theOutput = "How much money do you want to add?";
+				waitingForAddAmount = true;
 			} else { // Incorrect request
 				theOutput = myThreadName + " received incorrect request - only understand \"Do my action!\"";
 			}

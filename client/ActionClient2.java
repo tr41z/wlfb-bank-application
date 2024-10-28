@@ -70,7 +70,8 @@ public class ActionClient2 {
                 if (fromServer != null) {
                     System.out.println(fromServer);
                     // If the response indicates it's waiting for a withdrawal amount, set the flag
-                    if (fromServer.contains("How much money do you want to withdraw?")) {
+                    if (fromServer.contains("How much money do you want to withdraw?")
+                            || fromServer.contains("How much money do you want to add?")) {
                         waitingForAmount = true;
                     }
                 }
