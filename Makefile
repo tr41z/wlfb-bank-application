@@ -3,6 +3,3 @@ clean:
 
 all:
 	@javac */*.java
-
-run_server:
-	@java server.ActionServer
