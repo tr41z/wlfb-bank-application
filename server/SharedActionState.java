@@ -3,7 +3,7 @@ package server;
 public class SharedActionState {
 	private double[] accounts; // Array to hold the account balances
 	private boolean accessing = false; // true a thread has a lock, false otherwise
-	private int threadsWaiting = 0; // number of waiting writers
+	int threadsWaiting = 0; // number of waiting writers
 
 	public SharedActionState(double[] initialBalances) {
 		accounts = initialBalances;
