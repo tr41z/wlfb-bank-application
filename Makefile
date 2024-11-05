@@ -1,7 +1,7 @@
-delete_class:
+clean:
 	@rm -rf */*.class
 
-compile_class:
+all:
 	@javac */*.java
 
 run_server:
