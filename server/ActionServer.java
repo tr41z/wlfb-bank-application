@@ -7,32 +7,25 @@ public class ActionServer {
   public static void main(String[] args) throws IOException {
     ServerSocket actionServerSocket = null;
     boolean listening = true;
-    String actionServerName = "ActionServer";
     int actionServerNumber = 4545;
 
-    double accountBalance = 1000.0;
+    // Initialize shared state for three accounts with 1000 units each
+    SharedActionState sharedState = new SharedActionState(new double[] { 1000, 1000, 1000 }); // Accounts A, B, C
 
-    // Create the server socket
     try {
       actionServerSocket = new ServerSocket(actionServerNumber);
     } catch (IOException e) {
-      System.err.println("Could not start " + actionServerName + " on the specified port.");
+      System.err.println("Could not start server on port " + actionServerNumber);
       System.exit(-1);
     }
+    System.out.println("ActionServer started");
 
-    System.out.println(actionServerName + " started");
-
-    // Handle client connections - only four clients at a time
     while (listening) {
-      // Start four threads, one for each client connection
-      new ActionServerThread(actionServerSocket.accept(), "CLIENT1", new SharedActionState(accountBalance)).start();
-      new ActionServerThread(actionServerSocket.accept(), "CLIENT2", new SharedActionState(accountBalance)).start();
-      new ActionServerThread(actionServerSocket.accept(), "CLIENT3", new SharedActionState(accountBalance)).start();
-
-      System.out.println("New " + actionServerName + " thread started.");
+      new ActionServerThread(actionServerSocket.accept(), "ActionServerThread1", sharedState).start();
+      new ActionServerThread(actionServerSocket.accept(), "ActionServerThread2", sharedState).start();
+      new ActionServerThread(actionServerSocket.accept(), "ActionServerThread3", sharedState).start();
     }
 
-    // Close the server socket after use
     actionServerSocket.close();
   }
 }
