@@ -22,7 +22,7 @@ public class ActionServerThread extends Thread {
       String inputLine;
 
       while ((inputLine = in.readLine()) != null) {
-        System.out.println(myActionServerThreadName + " received: " + inputLine); // Log received message
+        System.out.println(myActionServerThreadName + " received: " + inputLine); // log received message
         String outputLine;
 
         // Get a lock and process the input
@@ -30,7 +30,7 @@ public class ActionServerThread extends Thread {
           mySharedActionStateObject.acquireLock();
           outputLine = mySharedActionStateObject.processInput(inputLine);
           out.println(outputLine);
-          System.out.println(myActionServerThreadName + " sending: " + outputLine); // Log sent response
+          System.out.println(myActionServerThreadName + " sending: " + outputLine); // log sent response
           mySharedActionStateObject.releaseLock();
         } catch (InterruptedException e) {
           System.err.println("Failed to get lock when reading: " + e);

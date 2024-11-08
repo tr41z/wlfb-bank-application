@@ -1,7 +1,7 @@
 package server;
 
 public class SharedActionState {
-	private double[] accounts; // Array to hold the account balances
+	private double[] accounts; // array to hold the account balances
 	private boolean accessing = false; // true a thread has a lock, false otherwise
 	int threadsWaiting = 0; // number of waiting writers
 
@@ -55,11 +55,11 @@ public class SharedActionState {
 	private int getAccountIndex(String clientID) {
 		switch (clientID) {
 			case "Client1":
-				return 0; // Account A
+				return 0; // account 1
 			case "Client2":
-				return 1; // Account B
+				return 1; // account 2
 			case "Client3":
-				return 2; // Account C
+				return 2; // account 3
 			default:
 				throw new IllegalArgumentException("Unknown client ID: " + clientID);
 		}
@@ -71,10 +71,10 @@ public class SharedActionState {
 		++threadsWaiting;
 		while (accessing) { // while someone else is accessing or threadsWaiting > 0
 			System.out.println(me.getName() + " waiting to get a lock as someone else is accessing...");
-			// wait for the lock to be released - see releaseLock() below
+			// Wait for the lock to be released - see releaseLock() below
 			wait();
 		}
-		// nobody has got a lock so get one
+		// Nobody has got a lock so get one
 		--threadsWaiting;
 		accessing = true;
 		System.out.println(me.getName() + " got a lock!");
@@ -82,7 +82,7 @@ public class SharedActionState {
 
 	// Releases a lock to when a thread is finished
 	public synchronized void releaseLock() {
-		// release the lock and tell everyone
+		// Release the lock and tell everyone
 		accessing = false;
 		notifyAll();
 		Thread me = Thread.currentThread(); // get a ref to the current thread

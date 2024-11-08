@@ -10,7 +10,7 @@ public class ActionServer {
     int actionServerNumber = 4545;
 
     // Initialize shared state for three accounts with 1000 units each
-    SharedActionState sharedState = new SharedActionState(new double[] { 1000, 1000, 1000 }); // Accounts A, B, C
+    SharedActionState sharedState = new SharedActionState(new double[] { 1000, 1000, 1000 }); // accounts A, B, C
 
     try {
       actionServerSocket = new ServerSocket(actionServerNumber);
