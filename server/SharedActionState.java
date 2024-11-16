@@ -46,6 +46,9 @@ public class SharedActionState {
 			case "view":
 				response = clientID + ": Your current balance is " + accounts[accountIndex];
 				break;
+			case "exit":
+				response = clientID + ": exited.";
+				return response;
 			default:
 				response = clientID + ": Unknown command.";
 		}

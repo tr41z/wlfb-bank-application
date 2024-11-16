@@ -23,12 +23,19 @@ public class ActionServerThread extends Thread {
 
       while ((inputLine = in.readLine()) != null) {
         System.out.println(myActionServerThreadName + " received: " + inputLine); // log received message
-        String outputLine;
+        
+        // Check for "exit" command
+        if (inputLine.toLowerCase().contains("exit")) {
+          String outputLine = "Client exited.";
+          out.println(outputLine);
+          System.out.println(myActionServerThreadName + " sending: " + outputLine);
+          break; // Exit the loop to terminate the thread
+        }
 
         // Get a lock and process the input
         try {
           mySharedActionStateObject.acquireLock();
-          outputLine = mySharedActionStateObject.processInput(inputLine);
+          String outputLine = mySharedActionStateObject.processInput(inputLine);
           out.println(outputLine);
           System.out.println(myActionServerThreadName + " sending: " + outputLine); // log sent response
           mySharedActionStateObject.releaseLock();
