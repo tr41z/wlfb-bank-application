@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 public class ActionClient3 {
-    private static final String ACTION_CLIENT_ID = "Client3"; // ID for this client
+    private static final String ACTION_CLIENT_ID = "CLIENT3"; // ID for this client
 
     public static void main(String[] args) throws IOException {
         Socket actionClientSocket = null;

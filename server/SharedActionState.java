@@ -57,11 +57,11 @@ public class SharedActionState {
 
 	private int getAccountIndex(String clientID) {
 		switch (clientID) {
-			case "Client1":
+			case "CLIENT1":
 				return 0; // account 1
-			case "Client2":
+			case "CLIENT2":
 				return 1; // account 2
-			case "Client3":
+			case "CLIENT3":
 				return 2; // account 3
 			default:
 				throw new IllegalArgumentException("Unknown client ID: " + clientID);
