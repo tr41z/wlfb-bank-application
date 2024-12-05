@@ -1,3 +1,10 @@
+/**
+ * The SharedActionState class manages the shared state of three accounts and provides synchronized 
+ * methods for processing client commands (add, subtract, transfer, view). It ensures thread-safe 
+ * access to the account balances using locking mechanisms to prevent race conditions. The class 
+ * supports concurrent client interactions while maintaining consistency of account data.
+*/
+
 package server;
 
 public class SharedActionState {

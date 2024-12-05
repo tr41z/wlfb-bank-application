@@ -1,3 +1,11 @@
+/**
+ * The ActionServerThread class handles client communication in a separate thread. 
+ * It processes incoming requests from a client, interacts with the shared state to 
+ * perform actions on accounts, and sends responses back to the client. Each thread 
+ * manages a specific client connection, ensuring concurrency and thread-safe access 
+ * to the shared state.
+*/
+
 package server;
 
 import java.net.*;

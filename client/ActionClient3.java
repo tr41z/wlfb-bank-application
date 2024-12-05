@@ -1,3 +1,17 @@
+/**
+ * The ActionClient3 class represents a simple client that communicates with an ActionServer 
+ * over a TCP socket. This client allows users to send commands to the server, such as adding 
+ * money or transferring it, and receive responses. The client uses standard 
+ * input to read user commands and outputs the server's responses to the console.
+ *
+ * Commands:
+ *  - add <value>
+ *  - subtract <value>
+ *  - transfer <to> <value>
+ *  - view
+ *  - exit
+*/
+
 package client;
 
 import java.io.*;

@@ -1,3 +1,10 @@
+/**
+ * The ActionServer class is a multi-threaded server that listens for client connections 
+ * on port 4545. It handles client requests concurrently, using a shared state to manage 
+ * three accounts with an initial balance of 1000 units each. Each client connection is 
+ * handled by a separate thread (ActionServerThread).
+*/
+
 package server;
 
 import java.net.*;
